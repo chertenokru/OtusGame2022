@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 namespace Mechanics
-    {
+{
     public sealed class AttackMechanics : MonoBehaviour
-        {
+    {
         [SerializeField]
         private EventReceiver attackSourceReciver;
         [SerializeField]
@@ -15,24 +15,24 @@ namespace Mechanics
 
 
         private void OnEnable()
-            {
-            attackSourceReciver.OnEvent += attack;
-            }
+        {
+            attackSourceReciver.OnEvent += Attack;
+        }
         private void OnDisable()
-            {
-            attackSourceReciver.OnEvent -= attack;
-            }
+        {
+            attackSourceReciver.OnEvent -= Attack;
+        }
 
-        void attack()
-            {
-            if(countdown.IsPlaying)
+        void Attack()
+        {
+            if (countdown.IsPlaying)
                 return;
             else
-                {
-                enemyTarget?.TakeDamage(attackDamage.Value);
+            {
+                if (enemyTarget) enemyTarget.TakeDamage(attackDamage.Value);
                 countdown.ResetTime();
                 countdown.Play();
-                }
             }
         }
     }
+}

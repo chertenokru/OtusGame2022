@@ -2,7 +2,7 @@ using Mechanics;
 using System;
 using UnityEngine;
 public class InputKey : MonoBehaviour
-    {
+{
     [SerializeField]
     private KeyCode left;
     [SerializeField]
@@ -21,15 +21,15 @@ public class InputKey : MonoBehaviour
     public Action<GameInputAction> Action;
 
     private void Update()
-        {
-        if(Input.GetKey(left)) inputTargetReceiver.Call(GameInputAction.Left);
-        if(Input.GetKey(right)) inputTargetReceiver.Call(GameInputAction.Right);
-        if(Input.GetKey(top)) inputTargetReceiver.Call(GameInputAction.Top);
-        if(Input.GetKey(bottom)) inputTargetReceiver.Call(GameInputAction.Bottom);
-        if(Input.GetKey(jump)) inputTargetReceiver.Call(GameInputAction.Jump);
-        if(Input.GetKey(fire)) inputTargetReceiver.Call(GameInputAction.Fire);
-        }
-
-
-
+    {
+        if (Input.GetKey(left)) inputTargetReceiver.Call(GameInputAction.Left);
+        if (Input.GetKey(right)) inputTargetReceiver.Call(GameInputAction.Right);
+        if (Input.GetKey(top)) inputTargetReceiver.Call(GameInputAction.Top);
+        if (Input.GetKey(bottom)) inputTargetReceiver.Call(GameInputAction.Bottom);
+        if (Input.GetKey(jump)) inputTargetReceiver.Call(GameInputAction.Jump);
+        if (Input.GetKey(fire)) inputTargetReceiver.Call(GameInputAction.Fire);
     }
+
+
+
+}

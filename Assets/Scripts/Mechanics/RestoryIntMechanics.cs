@@ -1,8 +1,8 @@
 using UnityEngine;
 namespace Mechanics
-    {
+{
     public class RestoryIntMechanics : MonoBehaviour
-        {
+    {
         [SerializeField]
         private IntBehaviour endValue;
         [SerializeField]
@@ -21,57 +21,49 @@ namespace Mechanics
         private int lastValue;
         private int sign = 1;
 
-
-
         private void OnEnable()
-            {
-            checkSign(restoryStep.Value);
+        {
+            CheckSign(restoryStep.Value);
             currentValue.OnValueChanged += OnChangeValue;
             timerRestoryDelayStep.OnEnded += OnNextStep;
             timerDelayStart.OnEnded += OnNextStep;
-            restoryStep.OnValueChanged += checkSign;
+            restoryStep.OnValueChanged += CheckSign;
             lastValue = currentValue.Value;
-            }
-
+        }
 
         private void OnDisable()
-            {
+        {
             currentValue.OnValueChanged -= OnChangeValue;
             timerRestoryDelayStep.OnEnded -= OnNextStep;
             timerDelayStart.OnEnded -= OnNextStep;
-            restoryStep.OnValueChanged -= checkSign;
-            }
-
+            restoryStep.OnValueChanged -= CheckSign;
+        }
 
         private void OnChangeValue(int newValue)
+        {
+            if (newValue * sign < lastValue * sign && !timerDelayStart.IsPlaying)
             {
-
-            if(newValue * sign < lastValue * sign && !timerDelayStart.IsPlaying)
-                {
                 timerDelayStart.Stop();
                 timerRestoryDelayStep.Stop();
                 timerDelayStart.Duration = restoryDelayStart.Value;
                 timerDelayStart.ResetTime();
                 timerDelayStart.Play();
-                }
-            lastValue = newValue;
             }
-
+            lastValue = newValue;
+        }
         private void OnNextStep()
-            {
-            if(currentValue.Value * sign >= endValue.Value * sign || timerDelayStart.IsPlaying) return;
+        {
+            if (currentValue.Value * sign >= endValue.Value * sign || timerDelayStart.IsPlaying) return;
             currentValue.Value += restoryStep.Value;
             timerRestoryDelayStep.Stop();
             timerRestoryDelayStep.Duration = restoryDelayStep.Value;
             timerRestoryDelayStep.ResetTime();
             timerRestoryDelayStep.Play();
-            }
-
-
-        private void checkSign(int value)
-            {
-            sign = value < 0 ? -1 : 1;
-            }
         }
 
+        private void CheckSign(int value)
+        {
+            sign = value < 0 ? -1 : 1;
+        }
     }
+}

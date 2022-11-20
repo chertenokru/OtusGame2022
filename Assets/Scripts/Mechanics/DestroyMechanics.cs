@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 namespace Mechanics
-    {
+{
     public sealed class DestroyMechanics : MonoBehaviour
-        {
+    {
         [SerializeField]
         private GameObject target;
         [SerializeField]
@@ -12,22 +12,21 @@ namespace Mechanics
         public bool DontDestroy;
 
         private void OnEnable()
-            {
+        {
             deathSourceReceiver.OnEvent += SelfDestroy;
-            }
+        }
 
         private void OnDisable()
-            {
+        {
             deathSourceReceiver.OnEvent -= SelfDestroy;
-            }
+        }
 
         public void SelfDestroy()
-            {
-
-            if(target)
-                if(DontDestroy)
+        {
+            if (target)
+                if (DontDestroy)
                     target.SetActive(false);
                 else Destroy(target);
-            }
         }
     }
+}

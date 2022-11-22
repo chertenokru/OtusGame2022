@@ -6,7 +6,7 @@ namespace Mechanics
     public sealed class AttackBulletMechanics_KeyActions : MonoBehaviour
     {
         [SerializeField]
-        private GameInputActionEventReceiver fireKeySourceReciver;
+        private EventReceiver fireKeySourceReciver;
         [SerializeField]
         private TimerBehaviour delay;
         [SerializeField]
@@ -26,9 +26,9 @@ namespace Mechanics
             fireKeySourceReciver.OnEvent -= Attack;
         }
 
-        void Attack(GameInputAction action)
+        void Attack()
         {
-            if (action == GameInputAction.Fire && !delay.IsPlaying)
+            if (!delay.IsPlaying)
             {
                 Instantiate(bullet, createPosition.position, Quaternion.identity);
                 delay.ResetTime();

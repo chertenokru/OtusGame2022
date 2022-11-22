@@ -12,10 +12,16 @@ namespace Mechanics
     {
         [SerializeField]
         [Required]
-        private Transform transformTarget;
+        private Transform[] moveTransforms;
         [SerializeField]
         [Required]
         private IntBehaviour speed;
+        [SerializeField]
+        [Required]
+        private FloatBehaviour frequency;
+        [SerializeField]
+        [Required]
+        private FloatBehaviour amplitude;
         [SerializeField]
         private MoveType moveType;
 
@@ -27,7 +33,8 @@ namespace Mechanics
                     Move(Vector3.forward * speed.Value * Time.deltaTime);
                     break;
                 case MoveType.Circle:
-                    Move(new Vector3(Mathf.Sin(Time.time * speed.Value) * 3, 0, Mathf.Cos(Time.time * speed.Value) * 3));
+                    //Move(new Vector3(Mathf.Sin(Time.timeScale * speed.Value), 0, Mathf.Cos(Time.deltaTime * speed.Value)));
+                    Move(new Vector3(Mathf.Cos(Time.time * frequency.Value) * amplitude.Value, Mathf.Sin(Time.time * frequency.Value) * amplitude.Value, 0) * Time.deltaTime);
                     break;
             }
         }
@@ -35,7 +42,10 @@ namespace Mechanics
 
         private void Move(Vector3 direction)
         {
-            transformTarget.position += direction * (speed.Value * Time.deltaTime);
+            foreach (var item in moveTransforms)
+            {
+                item.position += direction;
+            }
         }
     }
 

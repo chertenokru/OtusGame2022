@@ -10,9 +10,9 @@ namespace Mechanics
         [SerializeField]
         private IntBehaviour restoryStep;
         [SerializeField]
-        private IntBehaviour restoryDelayStart;
+        private FloatBehaviour restoryDelayStart;
         [SerializeField]
-        private IntBehaviour restoryDelayStep;
+        private FloatBehaviour restoryDelayStep;
         [SerializeField]
         private TimerBehaviour timerDelayStart;
         [SerializeField]
@@ -24,27 +24,28 @@ namespace Mechanics
         private void OnEnable()
         {
             CheckSign(restoryStep.Value);
-            currentValue.OnValueChanged += OnChangeValue;
+            currentValue.OnEvent += OnChangeValue;
             timerRestoryDelayStep.OnEnded += OnNextStep;
             timerDelayStart.OnEnded += OnNextStep;
-            restoryStep.OnValueChanged += CheckSign;
+            restoryStep.OnEvent += CheckSign;
             lastValue = currentValue.Value;
         }
 
         private void OnDisable()
         {
-            currentValue.OnValueChanged -= OnChangeValue;
+            currentValue.OnEvent -= OnChangeValue;
             timerRestoryDelayStep.OnEnded -= OnNextStep;
             timerDelayStart.OnEnded -= OnNextStep;
-            restoryStep.OnValueChanged -= CheckSign;
+            restoryStep.OnEvent -= CheckSign;
         }
 
         private void OnChangeValue(int newValue)
         {
-            if (newValue * sign < lastValue * sign && !timerDelayStart.IsPlaying)
+            if (newValue * sign < lastValue * sign)
             {
                 timerDelayStart.Stop();
                 timerRestoryDelayStep.Stop();
+                timerRestoryDelayStep.ResetTime();
                 timerDelayStart.Duration = restoryDelayStart.Value;
                 timerDelayStart.ResetTime();
                 timerDelayStart.Play();

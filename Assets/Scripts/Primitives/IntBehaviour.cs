@@ -5,14 +5,14 @@ namespace Mechanics
 {
     public class IntBehaviour : MonoBehaviour
     {
-        public event Action<int> OnValueChanged;
+        public event Action<int> OnEvent;
         public int Value
         {
             get { return this.value; }
             set
             {
                 this.value = value;
-                this.OnValueChanged?.Invoke(value);
+                this.OnEvent?.Invoke(value);
             }
         }
 

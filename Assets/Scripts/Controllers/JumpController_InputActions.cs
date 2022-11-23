@@ -21,7 +21,7 @@ namespace Mechanics
         private void OnEnable()
         {
             gameInputActionSourceReceiver.OnEvent += OnJumpAction;
-            jumpComponent = unit.Get<JumpComponent>();
+            jumpComponent = unit.Get<IJumpComponent>();
         }
 
         private void OnDisable()

@@ -6,7 +6,7 @@ namespace Mechanics
 
     public enum MoveType
     {
-        Forward, Circle
+        Forward, Circle, Up
     }
     public sealed class MoveMechanics_Auto : MonoBehaviour
     {
@@ -31,6 +31,9 @@ namespace Mechanics
             {
                 case MoveType.Forward:
                     Move(Vector3.forward * speed.Value * Time.deltaTime);
+                    break;
+                case MoveType.Up:
+                    Move(Vector3.up * speed.Value * Time.deltaTime);
                     break;
                 case MoveType.Circle:
                     //Move(new Vector3(Mathf.Sin(Time.timeScale * speed.Value), 0, Mathf.Cos(Time.deltaTime * speed.Value)));

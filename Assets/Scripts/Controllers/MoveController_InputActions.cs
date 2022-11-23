@@ -51,7 +51,7 @@ namespace Controllers
 
         private void Move(Vector3 direction)
         {
-            moveComponent.Move(direction * (moveComponent.GetSpeed() * Time.deltaTime));
+            moveComponent.Move(direction);
         }
     }
 

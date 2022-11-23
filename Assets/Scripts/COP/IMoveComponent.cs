@@ -5,6 +5,6 @@ namespace Components
     public interface IMoveComponent
     {
         void Move(Vector3 vector);
-        int GetSpeed();
+
     }
 }

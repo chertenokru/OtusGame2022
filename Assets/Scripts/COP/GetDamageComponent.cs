@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Components
 {
-    public class DamageComponent : MonoBehaviour, IDamageComponent
+    public class GetDamageComponent : MonoBehaviour, IGetDamageComponent
     {
         [SerializeField]
         [Required]

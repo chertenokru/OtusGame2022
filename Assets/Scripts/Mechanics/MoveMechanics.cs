@@ -1,4 +1,5 @@
 ﻿
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Mechanics
@@ -6,10 +7,16 @@ namespace Mechanics
     public sealed class MoveMechanics : MonoBehaviour
     {
         [SerializeField]
+        [Required]
         private Vector3EventReceiver vector3EventSourceReceiver;
 
         [SerializeField]
+        [Required]
         private Transform[] moveTransforms;
+
+        [SerializeField]
+        [Required]
+        private FloatBehaviour speed;
 
         private void OnEnable()
         {
@@ -25,7 +32,7 @@ namespace Mechanics
         {
             foreach (var item in moveTransforms)
             {
-                item.position += moveVector;
+                item.position += moveVector * speed.Value * Time.deltaTime;
             }
         }
     }

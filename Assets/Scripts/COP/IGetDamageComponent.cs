@@ -1,6 +1,6 @@
 ﻿namespace Components
 {
-    public interface IDamageComponent
+    public interface IGetDamageComponent
     {
         int GetDamage();
     }

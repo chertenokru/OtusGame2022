@@ -34,7 +34,7 @@ namespace Mechanics
                 return;
             }
 
-            entity.TryGet(out IDamageComponent damageFromOther);
+            entity.TryGet(out IGetDamageComponent damageFromOther);
             entity.TryGet(out ITakeDamageComponent takeDamageOther);
 
             var damageFromOtherValue = 0;

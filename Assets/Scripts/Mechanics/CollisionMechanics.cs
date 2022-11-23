@@ -1,5 +1,6 @@
 ﻿using Components;
 using Entities;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Mechanics
@@ -7,6 +8,7 @@ namespace Mechanics
     public sealed class CollisionMechanics : MonoBehaviour
     {
         [SerializeField]
+        [Required]
         private EventReceiver_Trigger collisionSourceReciver;
         [SerializeField]
         private IntBehaviour damage;

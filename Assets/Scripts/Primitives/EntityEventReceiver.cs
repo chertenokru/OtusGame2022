@@ -8,12 +8,12 @@ namespace Mechanics
 
     public class EntityEventReceiver : MonoBehaviour
     {
-        public event Action<Entity> OnEvent;
+        public event Action<IEntity> OnEvent;
 
         [PropertySpace(8)]
         [GUIColor(0, 1, 0)]
         [Button]
-        public void Call(Entity entity)
+        public void Call(IEntity entity)
         {
             //Debug.Log($"Event {name} Received");
             this.OnEvent?.Invoke(entity);

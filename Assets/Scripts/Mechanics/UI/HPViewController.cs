@@ -38,19 +38,20 @@ public class HPViewController : MonoBehaviour
     private void OnDisable()
     {
         hp.OnEvent -= OnHPChanged;
+        StopAllCoroutines();
     }
 
     private void OnHPChanged(int hp)
     {
         text.text = hp.ToString();
-        if (!start) timerCoroutine = StartCoroutine(TimerRoutine(hp));
+        if(!start) timerCoroutine = StartCoroutine(TimerRoutine(hp));
     }
 
     private IEnumerator TimerRoutine(int hp)
     {
         start = true;
         materialTemp = ObjRenderer.material;
-        if (oldValue != 0) ObjRenderer.material = (hp > oldValue) ? materialPlus : materialMunis;
+        if(oldValue != 0) ObjRenderer.material = (hp > oldValue) ? materialPlus : materialMunis;
         yield return new WaitForSeconds(delayChangeColor);
         ObjRenderer.material = materialTemp;
         oldValue = hp;

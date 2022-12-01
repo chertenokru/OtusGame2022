@@ -1,37 +1,48 @@
-﻿using Components;
+﻿using Components.Interfaces;
 using Const;
-using Entities;
+using Controllers.Interfaces;
+using GameContext.Interfaces;
 using Mechanics;
-using Sirenix.OdinInspector;
+using Services;
+using Services.Interfaces;
 using UnityEngine;
 
 namespace Controllers
 {
-    public class AttackController_InputActions : MonoBehaviour
+    public sealed class AttackController_InputActions : MonoBehaviour, IStartGameListener, IFinishGameListener, IConstructListener, IResumeGameListener, IPauseGameListener
     {
-        [SerializeField]
-        [Required]
         private GameInputActionEventReceiver gameInputActionSourceReceiver;
-        [SerializeField]
-        [Required]
-        private UnityEntity unit;
-
         private IAttackComponent attackComponent;
 
-        private void OnEnable()
+        void IConstructListener.Construct(IGameContext context)
         {
-            gameInputActionSourceReceiver.OnEvent += OnAttackAction;
-            attackComponent = unit.Get<IAttackComponent>();
+            gameInputActionSourceReceiver = context.GetService<InputActionService>().GetInputActionReceiver();
+            attackComponent = context.GetService<ICharacterService>().GetCharacter().Get<IAttackComponent>();
         }
 
-        private void OnDisable()
+        void OnAttackAction(GameInputAction action)
+        {
+            if(action == GameInputAction.Fire) attackComponent.Attack();
+        }
+
+        void IStartGameListener.OnStartGame()
+        {
+            gameInputActionSourceReceiver.OnEvent += OnAttackAction;
+        }
+
+        void IFinishGameListener.OnFinishGame()
         {
             gameInputActionSourceReceiver.OnEvent -= OnAttackAction;
-            attackComponent = null;
         }
-        protected virtual void OnAttackAction(GameInputAction action)
+
+        public void OnPauseGame()
         {
-            if (action == GameInputAction.Fire) attackComponent.Attack();
+            gameInputActionSourceReceiver.OnEvent -= OnAttackAction;
+        }
+
+        public void OnResumeGame()
+        {
+            gameInputActionSourceReceiver.OnEvent += OnAttackAction;
         }
     }
 

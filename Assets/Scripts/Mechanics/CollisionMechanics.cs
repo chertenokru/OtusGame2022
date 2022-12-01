@@ -1,4 +1,4 @@
-﻿using Components;
+﻿using Components.Interfaces;
 using Entities;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -28,7 +28,7 @@ namespace Mechanics
 
         private void OnContact(Collider other)
         {
-            if (!other.TryGetComponent(out IEntity entity))
+            if(!other.TryGetComponent(out IEntity entity))
             {
                 //    Debug.Log($"NOT ENTITY {other.name}");
                 return;
@@ -39,11 +39,11 @@ namespace Mechanics
 
             var damageFromOtherValue = 0;
             // урон от врага
-            if (damageFromOther != null) damageFromOtherValue = damageFromOther.GetDamage();
+            if(damageFromOther != null) damageFromOtherValue = damageFromOther.GetDamage();
             // урон врагу от нас, если мы его можем наносить, а враг принимать
-            if ((damage != null) && (takeDamageOther != null)) takeDamageOther.TakeDamage(damage.Value);
+            if((damage != null) && (takeDamageOther != null)) takeDamageOther.TakeDamage(damage.Value);
             // урон нам, если мы можем его принимать, а враг наносить
-            if ((damageFromOtherValue > 0) && (damageTargetReciver != null)) damageTargetReciver.Call(damageFromOtherValue);
+            if((damageFromOtherValue > 0) && (damageTargetReciver != null)) damageTargetReciver.Call(damageFromOtherValue);
 
         }
 

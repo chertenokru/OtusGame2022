@@ -2,6 +2,6 @@
 {
     public enum GameInputAction
     {
-        None, Left, Right, Top, Bottom, Jump, Fire
+        None, Left, Right, Top, Bottom, Forward, Back,/* Jump,*/ Fire, ChangeWeapon, Pause
     }
 }

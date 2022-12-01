@@ -14,8 +14,7 @@ namespace Mechanics
         [Button]
         public void Call(GameInputAction action)
         {
-            // Debug.Log($"Event {name} with {action} Received");
-            OnEvent.Invoke(action);
+            OnEvent?.Invoke(action);
         }
     }
 }

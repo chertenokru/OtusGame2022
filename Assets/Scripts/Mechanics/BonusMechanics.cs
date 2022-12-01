@@ -1,4 +1,4 @@
-﻿using Components;
+﻿using Components.Interfaces;
 using Entities;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -55,7 +55,7 @@ namespace Mechanics
 
         private void OnCollision(Collider otherCollider)
         {
-            if (!otherCollider.TryGetComponent(out IEntity entity))
+            if(!otherCollider.TryGetComponent(out IEntity entity))
             {
                 return;
             }
@@ -64,7 +64,7 @@ namespace Mechanics
             entity.TryGet(out IAttackComponent attackComp);
 
             // если умеет атаковать и поддерживает изменение дамага
-            if (setDamageComp != null && attackComp != null)
+            if(setDamageComp != null && attackComp != null)
             {
                 setDamageComp.SetDamage(bonusValue.Value);
                 bonusText.Value = bonusValue.Value.ToString();

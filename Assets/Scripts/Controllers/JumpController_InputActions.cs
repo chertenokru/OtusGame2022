@@ -1,38 +1,37 @@
-﻿using Components;
+﻿using Components.Interfaces;
 using Const;
-using Entities;
-using Sirenix.OdinInspector;
+using Controllers.Interfaces;
+using GameContext.Interfaces;
+using Mechanics;
+using Services;
+using Services.Interfaces;
 using UnityEngine;
 
-namespace Mechanics
+namespace Controllers
 {
-    public sealed class JumpController_InputActions : MonoBehaviour
+    public sealed class JumpController_InputActions : MonoBehaviour, IStartGameListener, IFinishGameListener, IConstructListener
     {
-        [SerializeField]
-        [Required]
         private GameInputActionEventReceiver gameInputActionSourceReceiver;
-        [SerializeField]
-        [Required]
-        private UnityEntity unit;
-
         private IJumpComponent jumpComponent;
 
-
-        private void OnEnable()
+        void IConstructListener.Construct(IGameContext context)
         {
-            gameInputActionSourceReceiver.OnEvent += OnJumpAction;
-            jumpComponent = unit.Get<IJumpComponent>();
-        }
-
-        private void OnDisable()
-        {
-            gameInputActionSourceReceiver.OnEvent -= OnJumpAction;
-            jumpComponent = null;
+            gameInputActionSourceReceiver = context.GetService<InputActionService>().GetInputActionReceiver();
+            jumpComponent = context.GetService<ICharacterService>().GetCharacter().Get<IJumpComponent>();
         }
 
         private void OnJumpAction(GameInputAction action)
         {
-            if (action == GameInputAction.Jump) jumpComponent.Jump();
+            //     if (action == GameInputAction.Jump) jumpComponent.Jump();
+        }
+
+        void IStartGameListener.OnStartGame()
+        {
+            gameInputActionSourceReceiver.OnEvent += OnJumpAction;
+        }
+        void IFinishGameListener.OnFinishGame()
+        {
+            gameInputActionSourceReceiver.OnEvent -= OnJumpAction;
         }
     }
 }

@@ -13,39 +13,39 @@ namespace Mechanics
         [SerializeField]
         private TimerBehaviour deathTimer;
         [SerializeField]
-        private EventReceiver_Trigger deathCollasion;
+        private EventReceiver_TriggerTwoCollider deathCollasion;
 
         private void OnEnable()
         {
-            if (hitPoints) hitPoints.OnEvent += OnHitPointsChanged;
-            if (deathTimer)
+            if(hitPoints) hitPoints.OnEvent += OnHitPointsChanged;
+            if(deathTimer)
             {
                 deathTimer.OnEnded += Death;
                 deathTimer.Play();
             }
-            if (deathCollasion)
+            if(deathCollasion)
             {
-                deathCollasion.OnTriggerEntered += OnTrigetEntry;
+                //    deathCollasion.OnTriggerEntered += OnTrigetEntry;
             }
         }
 
 
         private void OnDisable()
         {
-            if (hitPoints) hitPoints.OnEvent -= OnHitPointsChanged;
-            if (deathTimer)
+            if(hitPoints) hitPoints.OnEvent -= OnHitPointsChanged;
+            if(deathTimer)
             {
                 deathTimer.OnEnded -= Death;
                 deathTimer.Stop();
             }
-            if (deathCollasion)
+            if(deathCollasion)
             {
-                deathCollasion.OnTriggerEntered -= OnTrigetEntry;
+                //     deathCollasion.OnTriggerEntered -= OnTrigetEntry;
             }
         }
         private void OnHitPointsChanged(int newValue)
         {
-            if (newValue <= 0) Death();
+            if(newValue <= 0) Death();
         }
         private void OnTrigetEntry(Collider other)
         {
@@ -66,7 +66,7 @@ namespace Mechanics
 
         private void Death()
         {
-            if (deathTargetReceiver) deathTargetReceiver.Call();
+            if(deathTargetReceiver) deathTargetReceiver.Call();
         }
     }
 

@@ -33,6 +33,9 @@ namespace Mechanics
 
         private void OnDisable()
         {
+            timerDelayStart.Stop();
+            timerRestoryDelayStep.Stop();
+            restoryStep.OnEvent -= CheckSign;
             currentValue.OnEvent -= OnChangeValue;
             timerRestoryDelayStep.OnEnded -= OnNextStep;
             timerDelayStart.OnEnded -= OnNextStep;
@@ -41,7 +44,7 @@ namespace Mechanics
 
         private void OnChangeValue(int newValue)
         {
-            if (newValue * sign < lastValue * sign)
+            if (newValue * sign < lastValue * sign && newValue != 0)
             {
                 timerDelayStart.Stop();
                 timerRestoryDelayStep.Stop();

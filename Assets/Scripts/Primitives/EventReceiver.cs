@@ -15,7 +15,7 @@ namespace Mechanics
         [Button]
         public void Call()
         {
-            Debug.Log($"Event {name} Received");
+
             this.OnEvent?.Invoke();
         }
     }

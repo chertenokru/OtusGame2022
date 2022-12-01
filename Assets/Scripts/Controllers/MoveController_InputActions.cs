@@ -1,38 +1,34 @@
-﻿using Components;
+﻿using Components.Interfaces;
 using Const;
-using Entities;
+using Controllers.Interfaces;
+using GameContext.Interfaces;
 using Mechanics;
+using Services;
+using Services.Interfaces;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Controllers
 {
-    public class MoveController_InputActions : MonoBehaviour
+
+    public sealed class MoveController_InputActions : MonoBehaviour, IStartGameListener, IFinishGameListener, IConstructListener, IPauseGameListener, IResumeGameListener
     {
         [SerializeField]
-        [Required]
+        [ReadOnly]
         private GameInputActionEventReceiver gameInputActionSourceReceiver;
-        [SerializeField]
-        [Required]
-        private UnityEntity unit;
 
         private IMoveComponent moveComponent;
 
-        private void OnEnable()
+        void IConstructListener.Construct(IGameContext context)
         {
-            gameInputActionSourceReceiver.OnEvent += OnInputAction;
-            moveComponent = unit.Get<IMoveComponent>();
+            gameInputActionSourceReceiver = context.GetService<InputActionService>().GetInputActionReceiver();
+            moveComponent = context.GetService<ICharacterService>().GetCharacter().Get<IMoveComponent>();
         }
 
-        private void OnDisable()
-        {
-            gameInputActionSourceReceiver.OnEvent -= OnInputAction;
-            moveComponent = null;
-        }
-        protected virtual void OnInputAction(GameInputAction action)
+        void OnInputAction(GameInputAction action)
         {
             /// тут такое себе, я потом подумаю как это правильнее сделать
-            switch (action)
+            switch(action)
             {
                 case GameInputAction.Left:
                     Move(Vector3.left);
@@ -41,9 +37,15 @@ namespace Controllers
                     Move(Vector3.right);
                     break;
                 case GameInputAction.Top:
+                    Move(Vector3.up);
+                    break;
+                case GameInputAction.Forward:
                     Move(Vector3.forward);
                     break;
                 case GameInputAction.Bottom:
+                    Move(Vector3.down);
+                    break;
+                case GameInputAction.Back:
                     Move(Vector3.back);
                     break;
             }
@@ -52,6 +54,26 @@ namespace Controllers
         private void Move(Vector3 direction)
         {
             moveComponent.Move(direction);
+        }
+
+        void IStartGameListener.OnStartGame()
+        {
+            gameInputActionSourceReceiver.OnEvent += OnInputAction;
+        }
+
+        void IFinishGameListener.OnFinishGame()
+        {
+            gameInputActionSourceReceiver.OnEvent -= OnInputAction;
+        }
+
+        public void OnResumeGame()
+        {
+            gameInputActionSourceReceiver.OnEvent += OnInputAction;
+        }
+
+        public void OnPauseGame()
+        {
+            gameInputActionSourceReceiver.OnEvent -= OnInputAction;
         }
     }
 

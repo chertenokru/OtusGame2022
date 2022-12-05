@@ -36,6 +36,9 @@ namespace Mechanics
         [Required]
         private FloatBehaviour speed;
 
+        private bool requredToMove;
+        private Vector3 moveDirection;
+
         private void OnEnable()
         {
             vector3EventSourceReceiver.OnEvent += this.OnMove;
@@ -48,15 +51,34 @@ namespace Mechanics
 
         private void OnMove(Vector3 moveVector)
         {
-            var newPos = moveVector * (speed.Value * Time.deltaTime);
+
+            if(!requredToMove)
+            {
+                requredToMove = true;
+                moveDirection = moveVector;
+            }
+            else moveDirection += moveVector;
+        }
+
+        private void FixedUpdate()
+        {
+            if(requredToMove) Move();
+        }
+
+        private void Move()
+        {
+            var newPos = moveDirection * (speed.Value * Time.fixedDeltaTime);
             var limitedPos = limitedTransform.position;
-            if (LimitedOxisX.IsLimited) if ((limitedPos.x + newPos.x < LimitedOxisX.min) || (limitedPos.x + newPos.x > LimitedOxisX.max)) newPos.x = 0;
-            if (LimitedOxisY.IsLimited) if ((limitedPos.y + newPos.y < LimitedOxisY.min) || (limitedPos.y + newPos.y > LimitedOxisX.max)) newPos.y = 0;
-            if (LimitedOxisZ.IsLimited) if ((limitedPos.z + newPos.z < LimitedOxisZ.min) || (limitedPos.z + newPos.z > LimitedOxisX.max)) newPos.z = 0;
-            foreach (var item in moveTransforms)
+            if(LimitedOxisX.IsLimited) if((limitedPos.x + newPos.x < LimitedOxisX.min) || (limitedPos.x + newPos.x > LimitedOxisX.max)) newPos.x = 0;
+            if(LimitedOxisY.IsLimited) if((limitedPos.y + newPos.y < LimitedOxisY.min) || (limitedPos.y + newPos.y > LimitedOxisX.max)) newPos.y = 0;
+            if(LimitedOxisZ.IsLimited) if((limitedPos.z + newPos.z < LimitedOxisZ.min) || (limitedPos.z + newPos.z > LimitedOxisX.max)) newPos.z = 0;
+            foreach(var item in moveTransforms)
             {
                 item.position += newPos;
             }
+            requredToMove = false;
         }
+
+
     }
 }

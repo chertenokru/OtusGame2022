@@ -25,31 +25,36 @@ namespace Mechanics
         [SerializeField]
         private MoveType moveType;
 
-        private void Update()
+        private void FixedUpdate()
         {
-            switch (moveType)
-            {
-                case MoveType.Forward:
-                    Move(Vector3.forward * speed.Value * Time.deltaTime);
-                    break;
-                case MoveType.Up:
-                    Move(Vector3.up * speed.Value * Time.deltaTime);
-                    break;
-                case MoveType.Circle:
-                    //Move(new Vector3(Mathf.Sin(Time.timeScale * speed.Value), 0, Mathf.Cos(Time.deltaTime * speed.Value)));
-                    Move(new Vector3(Mathf.Cos(Time.time * frequency.Value) * amplitude.Value, Mathf.Sin(Time.time * frequency.Value) * amplitude.Value, 0) * Time.deltaTime);
-                    break;
-                case MoveType.Back:
-                    Move(Vector3.back * speed.Value * Time.deltaTime);
-                    break;
-
-            }
+            Move();
         }
 
 
-        private void Move(Vector3 direction)
+        private void Move()
         {
-            foreach (var item in moveTransforms)
+            Vector3 direction;
+
+            switch(moveType)
+            {
+                case MoveType.Forward:
+                    direction = Vector3.forward;
+                    break;
+                case MoveType.Up:
+                    direction = Vector3.up;
+                    break;
+                case MoveType.Circle:
+                    //Move(new Vector3(Mathf.Sin(Time.timeScale * speed.Value), 0, Mathf.Cos(Time.deltaTime * speed.Value)));
+                    direction = new Vector3(Mathf.Cos(Time.time) * amplitude.Value, Mathf.Sin(Time.time * frequency.Value) * amplitude.Value, 0);
+                    break;
+                case MoveType.Back:
+                    direction = Vector3.back;
+                    break;
+                default:
+                    return;
+            }
+            direction *= (speed.Value * Time.fixedDeltaTime);
+            foreach(var item in moveTransforms)
             {
                 item.position += direction;
             }
